@@ -54,7 +54,6 @@ const HomePage = (props) => {
 
         </Grid>
             <MovieList movies={displayedMovies} />
-
       </Grid>
     </Grid>
   );
