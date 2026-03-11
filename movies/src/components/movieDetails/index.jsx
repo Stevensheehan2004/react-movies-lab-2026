@@ -13,6 +13,7 @@ import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { useNavigate } from "react-router";
 
 const root = {
   display: "flex",
@@ -27,6 +28,7 @@ const chip = { margin: 0.5 };
 
 const MovieDetails = ({ movie, cast }) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <>
@@ -115,6 +117,19 @@ const MovieDetails = ({ movie, cast }) => {
           </div>
         </AccordionDetails>
       </Accordion>
+
+      <Fab
+        color="primary"
+        variant="extended"
+        onClick={() => navigate(`/movies/${movie.id}/recommendations`)}
+        sx={{
+          position: "fixed",
+          bottom: "5em",
+          right: "1em",
+        }}
+      >
+        Recommendations
+      </Fab>
 
       <Fab
         color="secondary"
