@@ -97,14 +97,18 @@ const MovieDetails = ({ movie, cast }) => {
                     style={{
                       width: "100%",
                       borderRadius: "10px",
+                      cursor: "pointer",
                     }}
+                    onClick={() => navigate(`/actors/${actor.id}`)}
                   />
 
                   <Typography
                     sx={{
                       fontWeight: "bold",
                       margin: "8px 0 4px 0",
+                      cursor: "pointer",
                     }}
+                    onClick={() => navigate(`/actors/${actor.id}`)}
                   >
                     {actor.name}
                   </Typography>
