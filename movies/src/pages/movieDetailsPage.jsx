@@ -1,17 +1,24 @@
+
 import React from "react";
-import { useParams } from 'react-router';
+import { useParams } from "react-router";
 import MovieDetails from "../components/movieDetails/";
 import PageTemplate from "../components/templateMoviePage";
-import { getMovie } from '../api/tmdb-api'
-import { useQuery } from '@tanstack/react-query';
-import Spinner from '../components/spinner'
+import { getMovie, getMovieCredits } from "../api/tmdb-api";
+import { useQuery } from "@tanstack/react-query";
+import Spinner from "../components/spinner";
 
-const MoviePage = (props) => {
+const MoviePage = () => {
   const { id } = useParams();
-  const { data: movie, error, isPending, isError  } = useQuery({
-    queryKey: ['movie', {id: id}],
+
+  const { data: movie, error, isPending, isError } = useQuery({
+    queryKey: ["movie", { id: id }],
     queryFn: getMovie,
-  })
+  });
+
+  const { data: cast } = useQuery({
+    queryKey: ["credits", { id: id }],
+    queryFn: () => getMovieCredits(id),
+  });
 
   if (isPending) {
     return <Spinner />;
@@ -21,13 +28,12 @@ const MoviePage = (props) => {
     return <h1>{error.message}</h1>;
   }
 
-
   return (
     <>
       {movie ? (
         <>
           <PageTemplate movie={movie}>
-            <MovieDetails movie={movie} />
+            <MovieDetails movie={movie} cast={cast} />
           </PageTemplate>
         </>
       ) : (
