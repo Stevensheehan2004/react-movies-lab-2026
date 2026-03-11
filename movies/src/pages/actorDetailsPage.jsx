@@ -1,10 +1,14 @@
 import React from "react";
-import { useParams } from "react-router";
+import { useParams, useNavigate } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import Chip from "@mui/material/Chip";
 import Spinner from "../components/spinner";
+import Accordion from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { getActor, getActorMovieCredits } from "../api/tmdb-api";
 
 const root = {
@@ -20,6 +24,7 @@ const chip = { margin: 0.5 };
 
 const ActorDetailsPage = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const {
     data: actor,
@@ -102,21 +107,63 @@ const ActorDetailsPage = () => {
             </li>
           </Paper>
 
-          <Typography variant="h6" sx={{ marginTop: "20px", marginBottom: "10px" }}>
-            Known For
-          </Typography>
+          <Accordion sx={{ marginTop: "20px" }}>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+              <Typography variant="h6">Movies</Typography>
+            </AccordionSummary>
 
-          <Paper component="ul" sx={{ ...root }}>
-            {credits &&
-              credits.slice(0, 10).map((movie) => (
-                <li key={movie.credit_id}>
-                  <Chip
-                    label={`${movie.title} (${movie.character || "Unknown role"})`}
-                    sx={{ ...chip }}
-                  />
-                </li>
-              ))}
-          </Paper>
+            <AccordionDetails>
+              <div
+                style={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                  gap: "20px",
+                  justifyContent: "center",
+                }}
+              >
+                {credits &&
+                  credits.map((movie) => (
+                    <div
+                      key={movie.credit_id}
+                      style={{
+                        width: "150px",
+                        textAlign: "center",
+                      }}
+                    >
+                      <img
+                        src={
+                          movie.poster_path
+                            ? `https://image.tmdb.org/t/p/w200${movie.poster_path}`
+                            : "https://via.placeholder.com/200x300?text=No+Image"
+                        }
+                        alt={movie.title}
+                        style={{
+                          width: "100%",
+                          borderRadius: "10px",
+                          cursor: "pointer",
+                        }}
+                        onClick={() => navigate(`/movies/${movie.id}`)}
+                      />
+
+                      <Typography
+                        sx={{
+                          fontWeight: "bold",
+                          margin: "8px 0 4px 0",
+                          cursor: "pointer",
+                        }}
+                        onClick={() => navigate(`/movies/${movie.id}`)}
+                      >
+                        {movie.title}
+                      </Typography>
+
+                      <Typography sx={{ fontSize: "0.9rem", margin: 0 }}>
+                        {movie.character || "Unknown role"}
+                      </Typography>
+                    </div>
+                  ))}
+              </div>
+            </AccordionDetails>
+          </Accordion>
         </div>
       </div>
     </div>
