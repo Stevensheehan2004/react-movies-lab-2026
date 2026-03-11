@@ -16,10 +16,8 @@ import img from '../../images/film-poster-placeholder.png'
 import { Link } from "react-router";
 import Avatar from '@mui/material/Avatar';
 
-
-
 export default function MovieCard({ movie, action }) {
-    const { favorites, addToFavorites } = useContext(MoviesContext);
+  const { favorites, addToFavorites } = useContext(MoviesContext);
 
   if (favorites.find((id) => id === movie.id)) {
     movie.favorite = true;
@@ -32,11 +30,14 @@ export default function MovieCard({ movie, action }) {
     addToFavorites(movie);
   };
 
-
-
   return (
-    <Card>
-            <CardHeader
+    <Card
+      sx={{
+        border: "2px solid black",
+        borderRadius: "8px"
+      }}
+    >
+      <CardHeader
         avatar={
           movie.favorite ? (
             <Avatar sx={{ backgroundColor: 'red' }}>
@@ -59,6 +60,7 @@ export default function MovieCard({ movie, action }) {
             : img
         }
       />
+
       <CardContent>
         <Grid container>
           <Grid size={{xs: 6}}>
@@ -75,16 +77,15 @@ export default function MovieCard({ movie, action }) {
           </Grid>
         </Grid>
       </CardContent>
-            <CardActions disableSpacing>
-      
+
+      <CardActions disableSpacing>
         {action(movie)}
-      
+
         <Link to={`/movies/${movie.id}`}>
           <Button variant="outlined" size="medium" color="primary">
             More Info ...
           </Button>
         </Link>
-        
       </CardActions>
 
     </Card>
