@@ -9,8 +9,8 @@ const WatchListPage = () => {
   const { mustWatch } = useContext(MoviesContext);
 
   const { data: movies, error, isPending, isError } = useQuery({
-    queryKey: ["upcoming"],
-    queryFn: getUpcomingMovies,
+    queryKey: ["upcoming-watchlist"],
+    queryFn: () => getUpcomingMovies(1),
   });
 
   if (isPending) return <Spinner />;

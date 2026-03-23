@@ -1,16 +1,11 @@
-export const getMovies = () => {
+export const getMovies = (page) => {
   return fetch(
-    `https://api.themoviedb.org/3/discover/movie?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&include_adult=false&include_video=false&page=1`
+    `https://api.themoviedb.org/3/discover/movie?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&page=${page}`
   ).then((response) => {
     if (!response.ok) {
-      return response.json().then((error) => {
-        throw new Error(error.status_message || "Something went wrong");
-      });
+      throw new Error("Failed to fetch movies");
     }
     return response.json();
-  })
-  .catch((error) => {
-      throw error
   });
 };
 
@@ -91,19 +86,14 @@ export const getMovie = (args) => {
    });
   };
 
-export const getUpcomingMovies = () => {
+export const getUpcomingMovies = (page) => {
   return fetch(
-    `https://api.themoviedb.org/3/movie/upcoming?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&page=1&region=US`
+    `https://api.themoviedb.org/3/movie/upcoming?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&page=${page}`
   ).then((response) => {
     if (!response.ok) {
-      return response.json().then((error) => {
-        throw new Error(error.status_message || "Something went wrong");
-      });
+      throw new Error("Failed to fetch upcoming movies");
     }
     return response.json();
-  })
-  .catch((error) => {
-    throw error
   });
 };
 
