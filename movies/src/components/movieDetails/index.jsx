@@ -26,7 +26,7 @@ const root = {
 
 const chip = { margin: 0.5 };
 
-const MovieDetails = ({ movie, cast }) => {
+const MovieDetails = ({ movie, cast, crew }) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -119,6 +119,26 @@ const MovieDetails = ({ movie, cast }) => {
                 </div>
               ))}
           </div>
+        </AccordionDetails>
+      </Accordion>
+
+      <Accordion>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          <Typography variant="h6">Crew</Typography>
+        </AccordionSummary>
+
+        <AccordionDetails>
+          <Paper component="ul" sx={{ ...root }}>
+            {crew &&
+              crew.slice(0, 25).map((person, index) => (
+                <li key={`${person.id}-${person.job}-${index}`}>
+                  <Chip
+                    label={`${person.name} - ${person.job}`}
+                    sx={{ ...chip }}
+                  />
+                </li>
+              ))}
+          </Paper>
         </AccordionDetails>
       </Accordion>
 
