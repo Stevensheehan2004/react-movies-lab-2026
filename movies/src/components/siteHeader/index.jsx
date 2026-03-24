@@ -10,7 +10,7 @@ import Menu from "@mui/material/Menu";
 import Badge from "@mui/material/Badge";
 import Switch from "@mui/material/Switch";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import { useNavigate } from "react-router";
+import { useNavigate, Link as RouterLink } from "react-router";
 import { styled } from "@mui/material/styles";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -33,7 +33,7 @@ const SiteHeader = ({ darkMode, toggleDarkMode }) => {
     { label: "Favorites", path: "/movies/favorites" },
     { label: "Upcoming", path: "/movies/upcoming" },
     { label: "Watchlist", path: "/watchlist" },
-    { label: "Now Playing", path: "/movies/nowplaying" },
+    { label: "Now Playing", path: "/movies/nowPlaying" },
     { label: "Top Rated", path: "/movies/top-rated" },
     { label: "Actors", path: "/actors" },
   ];
@@ -57,7 +57,20 @@ const SiteHeader = ({ darkMode, toggleDarkMode }) => {
         }}
       >
         <Toolbar>
-          <Typography variant="h4" sx={{ flexGrow: 1 }}>
+          <Typography
+            variant="h4"
+            component={RouterLink}
+            to="/"
+            sx={{
+              flexGrow: 1,
+              textDecoration: "none",
+              color: "inherit",
+              transition: "opacity 0.2s ease",
+              "&:hover": {
+                opacity: 0.8,
+              },
+            }}
+          >
             TMDB Client
           </Typography>
 

@@ -15,7 +15,7 @@ import UpcomingMoviesPage from "./pages/upcomingMoviesPage";
 import MovieRecommendationsPage from "./pages/movieRecommendationsPage";
 import ActorDetailsPage from "./pages/actorDetailsPage";
 import WatchListPage from "./pages/watchListPage";
-import NowPlayingPage from "./pages/popularMoviesPage";
+import NowPlayingPage from "./pages/nowPlayingMovies";
 import TopRatedMoviesPage from "./pages/topRatedMoviesPage";
 import ActorsPage from "./pages/actorsPage";
 
