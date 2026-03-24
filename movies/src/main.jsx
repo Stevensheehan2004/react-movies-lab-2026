@@ -15,6 +15,9 @@ import UpcomingMoviesPage from "./pages/upcomingMoviesPage";
 import MovieRecommendationsPage from "./pages/movieRecommendationsPage";
 import ActorDetailsPage from "./pages/actorDetailsPage";
 import WatchListPage from "./pages/watchListPage";
+import NowPlayingPage from "./pages/popularMoviesPage";
+import TopRatedMoviesPage from "./pages/topRatedMoviesPage";
+import ActorsPage from "./pages/actorsPage";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -48,8 +51,8 @@ const App = () => {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <BrowserRouter>
-          <SiteHeader darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
           <MoviesContextProvider>
+            <SiteHeader darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
             <Routes>
               <Route path="/movies/favorites" element={<FavoriteMoviesPage />} />
               <Route path="/reviews/:id" element={<MovieReviewPage />} />
@@ -59,6 +62,9 @@ const App = () => {
               <Route path="/reviews/form" element={<AddMovieReviewPage />} />
               <Route path="/movies/upcoming" element={<UpcomingMoviesPage />} />
               <Route path="/watchlist" element={<WatchListPage />} />
+              <Route path="/movies/nowplaying" element={<NowPlayingPage />} />
+              <Route path="/movies/top-rated" element={<TopRatedMoviesPage />} />
+              <Route path="/actors" element={<ActorsPage />} />
               <Route path="/" element={<HomePage />} />
               <Route path="*" element={<Navigate to="/" />} />
             </Routes>

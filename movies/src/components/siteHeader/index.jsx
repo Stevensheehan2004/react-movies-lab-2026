@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
@@ -7,14 +7,16 @@ import Button from "@mui/material/Button";
 import MenuIcon from "@mui/icons-material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
+import Badge from "@mui/material/Badge";
 import Switch from "@mui/material/Switch";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import { useNavigate } from "react-router";
-import { styled } from '@mui/material/styles';
+import { styled } from "@mui/material/styles";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { MoviesContext } from "../../contexts/moviesContext";
 
-const Offset = styled('div')(({ theme }) => theme.mixins.toolbar);
+const Offset = styled("div")(({ theme }) => theme.mixins.toolbar);
 
 const SiteHeader = ({ darkMode, toggleDarkMode }) => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -22,15 +24,19 @@ const SiteHeader = ({ darkMode, toggleDarkMode }) => {
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-  
+
   const navigate = useNavigate();
+  const { favorites, mustWatch } = useContext(MoviesContext);
 
   const menuOptions = [
-  { label: "Home", path: "/" },
-  { label: "Favorites", path: "/movies/favorites" },
-  { label: "Upcoming", path: "/movies/upcoming" },
-  { label: "Watchlist", path: "/watchlist" },
-];
+    { label: "Home", path: "/" },
+    { label: "Favorites", path: "/movies/favorites" },
+    { label: "Upcoming", path: "/movies/upcoming" },
+    { label: "Watchlist", path: "/watchlist" },
+    { label: "Now Playing", path: "/movies/nowplaying" },
+    { label: "Top Rated", path: "/movies/top-rated" },
+    { label: "Actors", path: "/actors" },
+  ];
 
   const handleMenuSelect = (pageURL) => {
     setAnchorEl(null);
@@ -47,7 +53,7 @@ const SiteHeader = ({ darkMode, toggleDarkMode }) => {
         position="fixed"
         sx={{
           background: "linear-gradient(135deg, #ff2ec4, #4b0082)",
-          color: "white"
+          color: "white",
         }}
       >
         <Toolbar>
@@ -112,15 +118,23 @@ const SiteHeader = ({ darkMode, toggleDarkMode }) => {
             </>
           ) : (
             <>
-              {menuOptions.map((opt) => (
-                <Button
-                  key={opt.label}
-                  color="inherit"
-                  onClick={() => handleMenuSelect(opt.path)}
-                >
-                  {opt.label}
-                </Button>
-              ))}
+              {menuOptions.map((opt) => {
+                let count = 0;
+                if (opt.label === "Favorites") count = favorites.length;
+                if (opt.label === "Watchlist") count = mustWatch.length;
+
+                return (
+                  <Button
+                    key={opt.label}
+                    color="inherit"
+                    onClick={() => handleMenuSelect(opt.path)}
+                  >
+                    <Badge badgeContent={count} color="error">
+                      {opt.label}
+                    </Badge>
+                  </Button>
+                );
+              })}
             </>
           )}
         </Toolbar>

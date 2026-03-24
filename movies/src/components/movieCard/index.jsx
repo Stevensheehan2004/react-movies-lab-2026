@@ -1,4 +1,4 @@
-import React, { useContext  } from "react";
+import React, { useContext } from "react";
 import { MoviesContext } from "../../contexts/moviesContext";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
@@ -10,50 +10,72 @@ import Typography from "@mui/material/Typography";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import CalendarIcon from "@mui/icons-material/CalendarTodayTwoTone";
 import StarRateIcon from "@mui/icons-material/StarRate";
-import IconButton from "@mui/material/IconButton";
 import Grid from "@mui/material/Grid";
-import img from '../../images/film-poster-placeholder.png'
+import img from "../../images/film-poster-placeholder.png";
 import { Link } from "react-router";
-import Avatar from '@mui/material/Avatar';
+import Avatar from "@mui/material/Avatar";
 
 export default function MovieCard({ movie, action }) {
-  const { favorites, addToFavorites } = useContext(MoviesContext);
+  const { favorites, mustWatch } = useContext(MoviesContext);
 
-  if (favorites.find((id) => id === movie.id)) {
-    movie.favorite = true;
-  } else {
-    movie.favorite = false
+  const isFavorite = favorites.includes(movie.id);
+  const isWatchlist = mustWatch.includes(movie.id);
+
+  movie.favorite = isFavorite;
+  movie.mustWatch = isWatchlist;
+
+ let borderColor = "2px solid rgba(255,255,255,0.3)";
+
+  if (isFavorite && isWatchlist) {
+    borderColor = "3px solid purple";
+  } else if (isFavorite) {
+    borderColor = "3px solid red";
+  } else if (isWatchlist) {
+    borderColor = "3px solid blue";
   }
-
-  const handleAddToFavorite = (e) => {
-    e.preventDefault();
-    addToFavorites(movie);
-  };
 
   return (
     <Card
       sx={{
-        border: "2px solid black",
-        borderRadius: "8px"
+        border: borderColor,
+        borderRadius: "10px",
+        height: "100%",             
+        display: "flex",            
+        flexDirection: "column",    
+        transition: "transform 0.3s ease, box-shadow 0.3s ease",
+        "&:hover": {
+          transform: "translateY(-8px)",
+          boxShadow: 8,
+        },
       }}
     >
       <CardHeader
         avatar={
           movie.favorite ? (
-            <Avatar sx={{ backgroundColor: 'red' }}>
+            <Avatar sx={{ backgroundColor: "red" }}>
               <FavoriteIcon />
             </Avatar>
+          ) : movie.mustWatch ? (
+            <Avatar sx={{ backgroundColor: "blue" }}>W</Avatar>
           ) : null
         }
         title={
-          <Typography variant="h5" component="p">
-            {movie.title}{" "}
+          <Typography
+            variant="h6"
+            sx={{
+              display: "-webkit-box",
+              WebkitLineClamp: 2,      
+              WebkitBoxOrient: "vertical",
+              overflow: "hidden",
+            }}
+          >
+            {movie.title}
           </Typography>
         }
       />
 
       <CardMedia
-        sx={{ height: 500 }}
+        sx={{ height: 400 }} 
         image={
           movie.poster_path
             ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
@@ -61,33 +83,33 @@ export default function MovieCard({ movie, action }) {
         }
       />
 
-      <CardContent>
+      <CardContent sx={{ flexGrow: 1 }}>
         <Grid container>
-          <Grid size={{xs: 6}}>
-            <Typography variant="h6" component="p">
+          <Grid size={{ xs: 6 }}>
+            <Typography variant="body1">
               <CalendarIcon fontSize="small" />
               {movie.release_date}
             </Typography>
           </Grid>
-          <Grid size={{xs: 6}}>
-            <Typography variant="h6" component="p">
+          <Grid size={{ xs: 6 }}>
+            <Typography variant="body1">
               <StarRateIcon fontSize="small" />
-              {"  "} {movie.vote_average}{" "}
+              {"  "}
+              {movie.vote_average}
             </Typography>
           </Grid>
         </Grid>
       </CardContent>
 
-      <CardActions disableSpacing>
+      <CardActions disableSpacing sx={{ mt: "auto" }}> 
         {action(movie)}
 
         <Link to={`/movies/${movie.id}`}>
-          <Button variant="outlined" size="medium" color="primary">
+          <Button variant="outlined" size="medium">
             More Info ...
           </Button>
         </Link>
       </CardActions>
-
     </Card>
   );
 }

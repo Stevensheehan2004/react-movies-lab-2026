@@ -1,22 +1,23 @@
 import React, { useContext } from "react";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import IconButton from "@mui/material/IconButton";
-import DeleteIcon from "@mui/icons-material/Delete";
+import Tooltip from "@mui/material/Tooltip";
 import { MoviesContext } from "../../contexts/moviesContext";
 
 const RemoveFromFavoritesIcon = ({ movie }) => {
-  const context = useContext(MoviesContext);
+  const { removeFromFavorites } = useContext(MoviesContext);
 
   const handleRemoveFromFavorites = (e) => {
     e.preventDefault();
-    context.removeFromFavorites(movie);
+    removeFromFavorites(movie);
   };
+
   return (
-    <IconButton
-      aria-label="remove from favorites"
-      onClick={handleRemoveFromFavorites}
-    >
-      <DeleteIcon color="primary" fontSize="large" />
-    </IconButton>
+    <Tooltip title="Remove from Favorites">
+      <IconButton onClick={handleRemoveFromFavorites}>
+        <FavoriteIcon color="error" fontSize="large" />
+      </IconButton>
+    </Tooltip>
   );
 };
 

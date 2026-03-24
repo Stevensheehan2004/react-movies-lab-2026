@@ -14,6 +14,8 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useNavigate } from "react-router";
+import Box from "@mui/material/Box";
+import Divider from "@mui/material/Divider";
 
 const root = {
   display: "flex",
@@ -31,70 +33,87 @@ const MovieDetails = ({ movie, cast, crew }) => {
   const navigate = useNavigate();
 
   return (
-    <>
-      <Typography variant="h5" component="h3">
-        Overview
-      </Typography>
+    <Box sx={{ maxWidth: "1200px", mx: "auto", px: 3, py: 2 }}>
+      <Paper elevation={4} sx={{ p: 3, borderRadius: 3, mb: 3 }}>
+        <Typography variant="h5" component="h3" sx={{ mb: 2, fontWeight: "bold" }}>
+          Overview
+        </Typography>
 
-      <Typography variant="h6" component="p">
-        {movie.overview}
-      </Typography>
+        <Typography variant="body1" sx={{ lineHeight: 1.8 }}>
+          {movie.overview}
+        </Typography>
+      </Paper>
 
-      <Paper component="ul" sx={{ ...root }}>
-        <li>
-          <Chip label="Genres" sx={{ ...chip }} color="primary" />
-        </li>
-        {movie.genres.map((g) => (
-          <li key={g.name}>
-            <Chip label={g.name} sx={{ ...chip }} />
+      <Paper elevation={4} sx={{ p: 2, borderRadius: 3, mb: 3 }}>
+        <Typography variant="h5" component="h3" sx={{ mb: 2, fontWeight: "bold" }}>
+          Movie Information
+        </Typography>
+
+        <Divider sx={{ mb: 2 }} />
+
+        <Paper component="ul" sx={{ ...root, boxShadow: "none" }}>
+          <Chip icon={<AccessTimeIcon />} label={`${movie.runtime} min.`} sx={{ ...chip }} />
+          <Chip
+            icon={<MonetizationIcon />}
+            label={`${movie.revenue.toLocaleString()}`}
+            sx={{ ...chip }}
+          />
+          <Chip
+            icon={<StarRate />}
+            label={`${movie.vote_average} (${movie.vote_count})`}
+            sx={{ ...chip }}
+          />
+          <Chip label={`Released: ${movie.release_date}`} sx={{ ...chip }} />
+        </Paper>
+
+        <Paper component="ul" sx={{ ...root, boxShadow: "none", mt: 1 }}>
+          <li>
+            <Chip label="Genres" sx={{ ...chip }} color="primary" />
           </li>
-        ))}
+          {movie.genres.map((g) => (
+            <li key={g.name}>
+              <Chip label={g.name} sx={{ ...chip }} />
+            </li>
+          ))}
+        </Paper>
       </Paper>
 
-      <Paper component="ul" sx={{ ...root }}>
-        <Chip icon={<AccessTimeIcon />} label={`${movie.runtime} min.`} />
-        <Chip
-          icon={<MonetizationIcon />}
-          label={`${movie.revenue.toLocaleString()}`}
-        />
-        <Chip
-          icon={<StarRate />}
-          label={`${movie.vote_average} (${movie.vote_count})`}
-        />
-        <Chip label={`Released: ${movie.release_date}`} />
-      </Paper>
-
-      <Accordion>
+      <Accordion sx={{ mb: 2, borderRadius: 3, overflow: "hidden" }}>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography variant="h6">Actors</Typography>
+          <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+            Actors
+          </Typography>
         </AccordionSummary>
 
         <AccordionDetails>
-          <div
-            style={{
+          <Divider sx={{ mb: 2 }} />
+          <Box
+            sx={{
               display: "flex",
               flexWrap: "wrap",
               gap: "20px",
               justifyContent: "center",
+              py: 1,
             }}
           >
             {cast &&
               cast.slice(0, 8).map((actor) => (
-                <div
+                <Box
                   key={actor.id}
-                  style={{
+                  sx={{
                     width: "150px",
                     textAlign: "center",
                   }}
                 >
-                  <img
+                  <Box
+                    component="img"
                     src={
                       actor.profile_path
                         ? `https://image.tmdb.org/t/p/w200${actor.profile_path}`
                         : "https://via.placeholder.com/200x300?text=No+Image"
                     }
                     alt={actor.name}
-                    style={{
+                    sx={{
                       width: "100%",
                       borderRadius: "10px",
                       cursor: "pointer",
@@ -105,7 +124,8 @@ const MovieDetails = ({ movie, cast, crew }) => {
                   <Typography
                     sx={{
                       fontWeight: "bold",
-                      margin: "8px 0 4px 0",
+                      mt: 1,
+                      mb: 0.5,
                       cursor: "pointer",
                     }}
                     onClick={() => navigate(`/actors/${actor.id}`)}
@@ -113,61 +133,58 @@ const MovieDetails = ({ movie, cast, crew }) => {
                     {actor.name}
                   </Typography>
 
-                  <Typography sx={{ fontSize: "0.9rem", margin: 0 }}>
-                    {actor.character}
-                  </Typography>
-                </div>
+                  <Typography variant="body2">{actor.character}</Typography>
+                </Box>
               ))}
-          </div>
+          </Box>
         </AccordionDetails>
       </Accordion>
 
-      <Accordion>
+      <Accordion sx={{ mb: 3, borderRadius: 3, overflow: "hidden" }}>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography variant="h6">Crew</Typography>
+          <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+            Crew
+          </Typography>
         </AccordionSummary>
 
         <AccordionDetails>
-          <Paper component="ul" sx={{ ...root }}>
+          <Divider sx={{ mb: 2 }} />
+          <Paper component="ul" sx={{ ...root, boxShadow: "none" }}>
             {crew &&
               crew.slice(0, 25).map((person, index) => (
                 <li key={`${person.id}-${person.job}-${index}`}>
-                  <Chip
-                    label={`${person.name} - ${person.job}`}
-                    sx={{ ...chip }}
-                  />
+                  <Chip label={`${person.name} - ${person.job}`} sx={{ ...chip }} />
                 </li>
               ))}
           </Paper>
         </AccordionDetails>
       </Accordion>
 
-      <Fab
-        color="primary"
-        variant="extended"
-        onClick={() => navigate(`/movies/${movie.id}/recommendations`)}
+      <Box
         sx={{
-          position: "fixed",
-          bottom: "5em",
-          right: "1em",
+          display: "flex",
+          justifyContent: "flex-end",
+          gap: 2,
+          mt: 2,
         }}
       >
-        Recommendations
-      </Fab>
+        <Fab
+          color="primary"
+          variant="extended"
+          onClick={() => navigate(`/movies/${movie.id}/recommendations`)}
+        >
+          Recommendations
+        </Fab>
 
-      <Fab
-        color="secondary"
-        variant="extended"
-        onClick={() => setDrawerOpen(true)}
-        sx={{
-          position: "fixed",
-          bottom: "1em",
-          right: "1em",
-        }}
-      >
-        <NavigationIcon />
-        Reviews
-      </Fab>
+        <Fab
+          color="secondary"
+          variant="extended"
+          onClick={() => setDrawerOpen(true)}
+        >
+          <NavigationIcon />
+          Reviews
+        </Fab>
+      </Box>
 
       <Drawer
         anchor="top"
@@ -176,7 +193,7 @@ const MovieDetails = ({ movie, cast, crew }) => {
       >
         <MovieReviews movie={movie} />
       </Drawer>
-    </>
+    </Box>
   );
 };
 

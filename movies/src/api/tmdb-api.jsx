@@ -160,3 +160,36 @@ export const getMovieCrew = (id) => {
     })
     .then((json) => json.crew);
 };
+
+export const getNowPlayingMovies = (page) => {
+  return fetch(
+    `https://api.themoviedb.org/3/movie/now_playing?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&page=${page}`
+  ).then((response) => {
+    if (!response.ok) {
+      throw new Error("Failed to fetch now playing movies");
+    }
+    return response.json();
+  });
+};
+
+export const getTopRatedMovies = (page) => {
+  return fetch(
+    `https://api.themoviedb.org/3/movie/top_rated?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&page=${page}`
+  ).then((response) => {
+    if (!response.ok) {
+      throw new Error("Failed to fetch top rated movies");
+    }
+    return response.json();
+  });
+};
+
+export const getPopularActors = (page) => {
+  return fetch(
+    `https://api.themoviedb.org/3/person/popular?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&page=${page}`
+  ).then((response) => {
+    if (!response.ok) {
+      throw new Error("Failed to fetch popular actors");
+    }
+    return response.json();
+  });
+};
